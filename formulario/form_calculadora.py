@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import font
 from config import constantes as cons
 import util.util_ventana as util_ventana
+from tkinter import messagebox
 
 class FormularioCalculadora(tk.Tk):
 
@@ -37,8 +38,9 @@ class FormularioCalculadora(tk.Tk):
         self.title('Calculadora con Tkinter')
         self.configure(bg=cons.FONDO_DARK)
         self.attributes('-alpha', 0.96)
-        util_ventana.centrar_ventana(self, 370, 570)
-
+        util_ventana.centrar_ventana(self, 370, 540)
+        self.resizable(False, False) # Deshabilita el redimensionamiento de la ventana
+        
     def construir_widget(self):
         #etiqueta
         self.operation_label = tk.Label(self, text='___', font=('Arial', 16), fg=cons.TEXTO_DARK, 
@@ -52,7 +54,7 @@ class FormularioCalculadora(tk.Tk):
 
         #lista de botones
         botones = [
-            'C', '%', '<', '/',
+            'C', '%', 'DEL', '/',
             '7', '8', '9', '*',
             '4', '5', '6', '-',
             '1', '2', '3', '+',
@@ -64,7 +66,7 @@ class FormularioCalculadora(tk.Tk):
         roboto_font = font.Font(family="Roboto", size=16)
 
         for boton in botones:
-            if boton in ['=', '*', '/', '-', '+', 'C', '<', '%']:
+            if boton in ['=', '*', '/', '-', '+', 'C', 'DEL', '%']:
                 color_fondo = cons.BOTONES_ESPECIALES_DARK
                 boton_font = font.Font(size=16, weight='bold')
             else:
@@ -94,12 +96,22 @@ class FormularioCalculadora(tk.Tk):
     def on_button_click(self, value):
         if value == '=':
             try:
-                expresion = self.entry.get().replace('%', '/100')
+                expresion = self.entry.get()
                 result = eval(expresion)
                 self.entry.delete(0, tk.END)
                 self.entry.insert(tk.END, str(result))
                 operacion = expresion + ' ' + value
                 self.operation_label.config(text=operacion)
+
+            except SyntaxError:
+                messagebox.showerror("Error", "Error de sintaxis")
+                self.entry.delete(0, tk.END)
+                self.operation_label.config(text='')
+
+            except ZeroDivisionError:
+                messagebox.showerror("Error", "División por cero no permitida.")
+                self.entry.delete(0, tk.END)
+                self.operation_label.config(text='')
 
             except Exception as e:
                 self.entry.delete(0, tk.END)
@@ -110,7 +122,7 @@ class FormularioCalculadora(tk.Tk):
             self.entry.delete(0, tk.END)
             self.operation_label.config(text='')
 
-        elif value == '<':
+        elif value == 'DEL':
             texto_actual = self.entry.get()
             if texto_actual:
                 new_texto = texto_actual[:-1]
