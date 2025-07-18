@@ -5,4 +5,4 @@ def centrar_ventana(ventana, app_ancho, app_largo):
     x = int((pantalla_ancho/2) * (app_ancho/2))
     y = int((pantalla_largo/2) * (app_largo/2))
     
-    return ventana.geometry(f'{app_ancho}x{app_largo}*{x}+{y}')
+    return ventana.geometry(f'{app_ancho}x{app_largo}+{x}+{y}')
