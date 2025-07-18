@@ -9,6 +9,7 @@ class FormularioCalculadora(tk.Tk):
         super().__init__()
         self.config_window()
         self.construir_widget()
+        
 
     def config_window(self):
         self.title('Calculadora con Tkinter')
@@ -50,17 +51,20 @@ class FormularioCalculadora(tk.Tk):
             
             tk.Button(self, text=boton, width=5, height=2,
                         bg=color_fondo, fg=cons.TEXTO_DARK, relief=tk.FLAT, 
-                        font=boton_font, padx=5, pady=5, bd=0, borderwidth=0,
-                        highlightthickness=0,
+                        font=boton_font, padx=5, pady=5, bd=0, 
+                        borderwidth=0, highlightthickness=0,
                         overrelief='flat').grid(row=row_val, column=col_val, pady=5)
             
             if boton == '=':
                 tk.Button(self, text=boton, width=11, height=2,
                           bg=color_fondo, fg=cons.TEXTO_DARK, relief=tk.FLAT, 
-                          font=boton_font, padx=5, pady=5,
+                          font=boton_font, padx=5, pady=5, bd=0,
+                          borderwidth=0, highlightthickness=0,
                           overrelief='flat').grid(row=row_val, column=col_val, columnspan=2, pady=5)
             col_val += 1
 
             if(col_val > 3):
                 col_val = 0
                 row_val += 1
+
+            
